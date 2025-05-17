@@ -5,8 +5,7 @@ export default function useWebSocket(onMessage) {
   const queue = useRef([]);
 
   useEffect(() => {
-    ws.current = new WebSocket('ws://localhost:3285');
-
+    ws.current = new WebSocket('wss://cloud-mlf25.abracodebra.com');
     ws.current.onopen = () => {
       console.log("✅ WebSocket connected");
       queue.current.forEach(msg => ws.current.send(msg));

@@ -22,6 +22,7 @@ export default function Home() {
   useEffect(() => {
     console.log("Current messages:", messages);
   }, [messages]);
+  
   useEffect(() => {
     console.log("Sending getMessages...");
     send({ action: "getMessages" });
@@ -83,7 +84,7 @@ export default function Home() {
         {/* Message Input */}
         <div className="flex flex-wrap space-x-2 w-full max-w-lg justify-center gap-3">
           <textarea
-            className="w-full max-w-lg p-3 border border-amber-400 rounded-lg"
+            className="w-full max-w-lg p-3 border border-amber-400 rounded-lg text-base"
             rows="2"
             placeholder="Type your message here..."
             value={message}

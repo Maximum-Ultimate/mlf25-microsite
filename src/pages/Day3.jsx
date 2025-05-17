@@ -1,109 +1,99 @@
 import { useState } from 'react';
 
-const sections = [
-  {
-    title: 'AMAZING RACE',
-    images: [
-      'https://picsum.photos/1080/1920?random=19',
-      'https://picsum.photos/1080/1900?random=22', // Button shows here
-      'https://picsum.photos/1080/1920?random=23',
-      'https://picsum.photos/1080/1920?random=25',
-    ],
-  },
-  {
-    title: 'GALA DINNER',
-    images: [
-      'https://picsum.photos/1080/1920?random=26',
-      'https://picsum.photos/1080/1920?random=27',
-      'https://picsum.photos/1080/1920?random=28',
-      'https://picsum.photos/1080/1920?random=29',
-    ],
-  },
+const images = [
+  { src: './assets/img/booklet/ISI 23.png', title: 'AMAZING RACE' },
+  { src: './assets/img/booklet/ISI 27B.png', title: 'AMAZING RACE' },
+  { src: './assets/img/booklet/ISI 24.png', title: 'AMAZING RACE' },
+  { src: './assets/img/booklet/ISI 25.png', title: 'GALA DINNER' },
+  { src: './assets/img/booklet/ISI 27B.png', title: 'GALA DINNER' },
+  { src: './assets/img/booklet/ISI 26.png', title: 'GALA DINNER' },
+  { src: './assets/img/booklet/Layer 1.png', title: '' }, // special
+  { src: './assets/img/booklet/ISI 22.png', title: 'AMAZING RACE' },
 ];
 
-export default function Day3() {
-  const [currentTab, setCurrentTab] = useState(0);
-  const [imageIndex, setImageIndex] = useState(0);
+export default function Day2() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const current = images[currentIndex];
+  const isSpecial = current.title === '';
 
-  const currentSection = sections[currentTab];
-  const images = currentSection.images;
+  function goPrev() {
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  }
 
-  const goImagePrev = () => {
-    setImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
-
-  const goImageNext = () => {
-    setImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
-
-  const handleTabClick = (index) => {
-    setCurrentTab(index);
-    setImageIndex(0); // reset carousel when tab changes
-  };
+  function goNext() {
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  }
 
   return (
-    <div className="flex flex-col justify-center items-center w-screen h-screen bg-gray-900 text-white px-4">
-      
-      {/* Title Tabs */}
-      <div className="flex justify-center space-x-4 mb-6">
-        {sections.map((section, index) => (
-          <button
-            key={index}
-            onClick={() => handleTabClick(index)}
-            className={`px-4 py-2 rounded-t-md font-medium transition ${
-              currentTab === index
-                ? 'bg-white text-gray-100'
-                : 'bg-gray-700 text-white hover:bg-gray-600'
-            }`}
-          >
-            {section.title}
-          </button>
-        ))}
-      </div>
+    <div className="flex flex-col items-center h-screen w-screen bg-clear text-white p-4 relative overflow-hidden">
+      {!isSpecial && (
+        <h1 className="text-2xl font-bold text-center mt-20 mb-4">{current.title}</h1>
+      )}
 
-      {/* Title Heading */}
-      <h1 className="text-3xl font-bold mb-4">{currentSection.title}</h1>
-
-      {/* Image Carousel */}
-      <div className="relative w-full max-w-2xl">
-        <div className="overflow-hidden rounded-lg h-96 relative">
-          {images.map((src, i) => (
+      <div className="relative w-full max-w-screen-md flex justify-center items-center flex-1">
+        {/* Image Carousel */}
+        <div className={`relative w-full ${isSpecial ? 'h-screen' : 'h-[85vh]'} flex items-center justify-center overflow-hidden`}>
+          {images.map((img, i) => (
             <img
               key={i}
-              src={src}
+              src={img.src}
               alt={`Slide ${i + 1}`}
-              className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-700 ${
-                i === imageIndex ? 'opacity-100' : 'opacity-0 pointer-events-none'
-              }`}
+              className={`absolute transition-opacity duration-700 ${
+                i === currentIndex ? 'opacity-100' : 'opacity-0 pointer-events-none '
+              } ${isSpecial ? 'object-contain w-screen h-screen ' : 'object-contain max-h-full max-w-full -mt-40'}`}
             />
           ))}
         </div>
 
-        {/* Image controls */}
+        {/* Navigation Arrows */}
         <button
-          onClick={goImagePrev}
-          className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-black bg-opacity-60 text-white text-xl rounded-full p-2 hover:bg-opacity-90"
-          aria-label="Previous"
+          onClick={goPrev}
+          className="absolute left-0 top-1/2 -translate-y-1/2 transition transform active:scale-110 duration-150 z-10"
         >
-          ‹
+          <img
+            src="/assets/img/kiri.webp"
+            className="w-4 m-2"
+            alt=""
+            style={{ filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.7))' }}
+          />
         </button>
         <button
-          onClick={goImageNext}
-          className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-black bg-opacity-60 text-white text-xl rounded-full p-2 hover:bg-opacity-90"
-          aria-label="Next"
+          onClick={goNext}
+          className="absolute right-0 top-1/2 -translate-y-1/2 transition transform active:scale-110 duration-150 z-10"
         >
-          ›
+          <img
+            src="/assets/img/kanan.webp"
+            className="w-4 m-2"
+            alt=""
+            style={{ filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.7))' }}
+          />
         </button>
+
+        {/* Special download button */}
+        {isSpecial && (
+          <a
+            href="/assets/file/YourFile.pdf"
+            download
+            className="absolute bottom-24 px-5 py-2 rounded-lg shadow-lg text-white font-semibold bg-gradient-to-b from-yellow-400 via-amber-400 to-yellow-500 hover:opacity-90 transition"
+
+          >
+            DOWNLOAD TEAM
+          </a>
+        )}
       </div>
 
-      {/* Conditional Button for Amazing Race at Image Index 1 */}
-      {currentTab === 0 && imageIndex === 1 && (
-        <div className="mt-4">
-          <button className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow">
-            Special Action Button
-          </button>
-        </div>
-      )}
+      {/* Slide Indicators */}
+      <div className="mb-20 -mt-30 flex gap-2">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentIndex(i)}
+            className={`w-3 h-1 rounded-full ${
+              currentIndex === i ? 'bg-white' : 'bg-gray-500'
+            }`}
+          />
+        ))}
+      </div>
     </div>
   );
 }

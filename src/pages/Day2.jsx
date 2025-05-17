@@ -1,8 +1,10 @@
 import { useState } from 'react';
 
 const images = [
-  'https://picsum.photos/1080/1920?random=19',
-  'https://picsum.photos/1080/1920?random=22',
+  { src: './assets/img/booklet/ISI 15.png', title: 'FORUM' },
+  { src: './assets/img/booklet/ISI 18.png', title: 'DINNER' },
+  { src: './assets/img/booklet/ISI 19.png', title: 'FORUM' },
+  { src: './assets/img/booklet/ISI 17.png', title: 'FORUM' },
 ];
 
 export default function Day2() {
@@ -21,40 +23,60 @@ export default function Day2() {
   }
 
   return (
-    
-    <div className="flex flex-wrap justify-center items-center w-screen h-screen bg-gray-800">
-        
-      <div className="relative w-full">
-      <h1 className="text-3xl font-bold text-center mb-2"> DINNER</h1>
-        {/* Carousel images */}
-        <div className="overflow-hidden rounded-lg h-96 md:h-96 relative">
-          {images.map((src, i) => (
+    <div className="flex flex-col items-center h-screen w-screen bg-clear text-white p-4">
+      <h1 className="text-2xl font-bold text-center mt-21">{images[currentIndex].title}</h1>
+      
+      <div className="relative w-full max-w-screen-md flex justify-center items-center -mt-20">
+        {/* Image Carousel */}
+        <div className="relative w-full h-[85vh] flex items-center justify-center overflow-hidden">
+          {images.map((img, i) => (
             <img
               key={i}
-              src={src}
+              src={img.src}
               alt={`Slide ${i + 1}`}
-              className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-700 ${
+              className={`absolute transition-opacity duration-700 object-contain max-h-full max-w-full ${
                 i === currentIndex ? 'opacity-100' : 'opacity-0 pointer-events-none'
               }`}
             />
           ))}
         </div>
 
-        {/* Controls */}
+        {/* Navigation Arrows */}
         <button
           onClick={goPrev}
-          className="absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-800 bg-opacity-60 rounded-full p-2 hover:bg-opacity-90 shadow"
-          aria-label="Previous"
+          className="absolute left-0 top-1/2 -translate-y-1/2 transition transform active:scale-110 duration-150"
         >
-          ‹
+          <img
+            src="/assets/img/kiri.webp"
+            className="w-4 m-2"
+            alt=""
+            style={{ filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.7))' }}
+          />
         </button>
         <button
           onClick={goNext}
-          className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-800 bg-opacity-60 rounded-full p-2 hover:bg-opacity-90 shadow"
-          aria-label="Next"
+          className="absolute right-0 top-1/2 -translate-y-1/2 transition transform active:scale-110 duration-150"
         >
-          ›
+          <img
+            src="/assets/img/kanan.webp"
+            className="w-4 m-2"
+            alt=""
+            style={{ filter: 'drop-shadow(0 0 6px rgba(255, 255, 255, 0.7))' }}
+          />
         </button>
+      </div>
+
+      {/* Slide Indicators */}
+      <div className="mt-4 flex gap-2">
+        {images.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrentIndex(i)}
+            className={`w-3 h-1 rounded-full ${
+              currentIndex === i ? 'bg-white' : 'bg-gray-500'
+            }`}
+          />
+        ))}
       </div>
     </div>
   );

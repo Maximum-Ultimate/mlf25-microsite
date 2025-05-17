@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import teaserVideo from "/assets/teaser.mp4";
+
 import kvImage from "/assets/img/kv.webp";
 import useWebSocket from "../hooks/useWebSocket";
 
@@ -7,6 +7,7 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const messagesEndRef = useRef(); // 👈 ref to scroll target
+  const teaserVideo =  "https://cloud-mlf25.abracodebra.com/teaser.mp4";
 
   const { send } = useWebSocket((data) => {
     if (data.action === "allMessages" && data.status === 200) {
